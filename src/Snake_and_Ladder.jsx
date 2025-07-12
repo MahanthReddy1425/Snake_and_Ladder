@@ -22,10 +22,7 @@ function Snake_and_ladder() {
     const [player1, setPlayer1] = useState('');
     const [player2, setPlayer2] = useState('');
     const [gameStarted, setGameStarted] = useState(false);
-    const roll_play = useRef(null);
     const roll_btn = useRef(null);
-    const pl1 = useRef(null);
-    const pl2 = useRef(null);
     const img_s = useRef(null);
     const player1Ref = useRef(null);
     const player2Ref = useRef(null);
@@ -86,8 +83,8 @@ function Snake_and_ladder() {
         let new_child = document.createElement('div');
         new_child.setAttribute('class', `cell childcls${j}`);
         new_child.setAttribute('id', `childid${j}`);
-        new_child.style.width = '70px';
-        new_child.style.height = '60px';
+        new_child.style.width = '100%';
+        new_child.style.height = '100%';
 
         const cellNumber = document.createElement('span');
         cellNumber.className = 'cell-number';
@@ -99,12 +96,10 @@ function Snake_and_ladder() {
         if (!player1Ref.current) {
             player1Ref.current = document.createElement('div');
             player1Ref.current.className = 'player-piece player1-piece';
-            player1Ref.current.style.backgroundImage = `url(${plr1})`;
         }
         if (!player2Ref.current) {
             player2Ref.current = document.createElement('div');
             player2Ref.current.className = 'player-piece player2-piece';
-            player2Ref.current.style.backgroundImage = `url(${plr2})`;
         }
 
         const startCell = document.getElementById('childid1');
@@ -154,7 +149,9 @@ function Snake_and_ladder() {
         newPos = currentPos + steps;
 
         if (newPos > 100) {
-            newPos = 100 - (newPos - 100);
+            roll_btn.current.disabled = false;
+            setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+            return;
         }
 
         let intermediatePos = currentPos;
@@ -187,7 +184,7 @@ function Snake_and_ladder() {
             } else {
                 updatePlayerPosition(player, intermediatePos);
             }
-        }, 500);
+        }, 350);
     }
 
     function updatePlayerPosition(player, position) {
@@ -259,7 +256,7 @@ function Snake_and_ladder() {
                 <div className="login-page">
                     <div className="welcome-section">
                         <div className="welcome-text">
-                            <h1 className="animated-welcome">Welcome to Snake and Ladder!</h1>
+                            <h1 className="animated-welcome">Snake and Ladder</h1>
                         </div>
                         <div className="s_l"><img src={s_l_i} alt="Snake and Ladder Logo" /></div>
                     </div>
@@ -296,40 +293,49 @@ function Snake_and_ladder() {
                     <div className="snake_and_ladder_img">
                         <img src={snake_main} alt="Snake and Ladder Title" />
                     </div>
-                    <div className="game-header">
-                        <div className={`player-info ${currentPlayer === 1 ? 'active' : ''}`}>
-                            <div className="player-avatar-container">
-                                <img src={plr1} alt="Player 1" className="player-icon" />
-                            </div>
-                            <span className="player-name">{player1}</span>
-                            <div className="player-position">Position: {player1Pos}</div>
-                        </div>
-                        
-                        <div className="dice-container">
-                            <div className="dice-wrapper">
-                                <img src={dg} alt="Dice" ref={img_s} className="dice-image" />
-                                <button 
-                                    ref={roll_btn} 
-                                    onClick={rollDice}
-                                    className="roll-btn"
-                                >
-                                    Roll Dice
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div className={`player-info ${currentPlayer === 2 ? 'active' : ''}`}>
-                            <div className="player-avatar-container">
-                                <img src={plr2} alt="Player 2" className="player-icon" />
-                            </div>
-                            <span className="player-name">{player2}</span>
-                            <div className="player-position">Position: {player2Pos}</div>
-                        </div>
-                    </div>
                     
-                    <div className="game-board">
-                        <div className="snake">
-                            <div id="snake_box"></div>
+                    <div className="game-main-area">
+                        <div className="game-header-container">
+                            <div className="game-header">
+                                <div className={`player-info ${currentPlayer === 1 ? 'active' : ''}`}>
+                                    <div className="player-avatar-container">
+                                        <img src={plr1} alt="Player 1" className="player-icon" />
+                                    </div>
+                                    <div className="player-details">
+                                        <span className="player-name">{player1}</span>
+                                        <div className="player-position">Position: {player1Pos}</div>
+                                    </div>
+                                </div>
+                                
+                                <div className="dice-container">
+                                    <div className="dice-wrapper">
+                                        <img src={dg} alt="Dice" ref={img_s} className="dice-image" />
+                                        <button 
+                                            ref={roll_btn} 
+                                            onClick={rollDice}
+                                            className="roll-btn"
+                                        >
+                                            Roll Dice
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div className={`player-info ${currentPlayer === 2 ? 'active' : ''}`}>
+                                    <div className="player-avatar-container">
+                                        <img src={plr2} alt="Player 2" className="player-icon" />
+                                    </div>
+                                    <div className="player-details">
+                                        <span className="player-name">{player2}</span>
+                                        <div className="player-position">Position: {player2Pos}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="game-board">
+                            <div className="snake">
+                                <div id="snake_box"></div>
+                            </div>
                         </div>
                     </div>
                     
